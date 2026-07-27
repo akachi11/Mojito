@@ -56,10 +56,17 @@ const Hero = () => {
         })
 
         videoRef.current.onloadedmetadata = () => {
+            // "unlocks" the video on iOS by decoding a frame
+            videoRef.current.play().then(() => {
+                videoRef.current.pause();
+            }).catch(() => {
+                // autoplay was blocked, but pause is harmless if play rejects
+            });
+
             tl.to(videoRef.current, {
                 currentTime: videoRef.current.duration
-            })
-        }
+            });
+        };
     }, [])
 
     return (
